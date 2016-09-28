@@ -7,6 +7,8 @@ class GildedRose {
     public static final int MAX_QUALITY = 50;
     public static final int ELEVEN_DAYS = 11;
     public static final int SIX_DAYS = 6;
+    public static final int SULFURAS_PERM_QUALITY = 80;
+    public static final String CONJURED = "Conjured";
     Item[] items;
 
     public GildedRose(Item[] items) {
@@ -16,64 +18,104 @@ class GildedRose {
     public void updateQuality() {
 
         for (int i = 0; i < items.length; i++) {
-                //SULFURAS
-            if (items[i].name.equals(SULFURAS)){}
+            //SULFURAS
+            items[i].sellIn = items[i].sellIn - 1;
 
-                //AGED_BRIE
+            if (items[i].name.equals(SULFURAS)) {
+                items[i].quality = SULFURAS_PERM_QUALITY;
+            }
+
+            //CONJURED
+            else if (items[i].name.contains(CONJURED)) {
+                updateConjuredItem(items[i]);
+            }
+            //AGED_BRIE
             else if (items[i].name.equals(AGED_BRIE)) {
-                items[i].sellIn = items[i].sellIn - 1;
-
-                if (items[i].quality < MAX_QUALITY) {
-                    if (items[i].sellIn < 0) {
-                        changeQuality(items[i], 2);
-                    } else {
-                        changeQuality(items[i], 1);
-                    }
-                }
-
-                continue;
+                updateAgedBrie(i);
 
             }
             // BACKSTAGE_PASSES
             else if (items[i].name.equals(BACKSTAGE_PASSES)) {
 
-                if (items[i].quality < MAX_QUALITY) {
+                updateBackstagePasses(items[i]);
 
-                    changeQuality(items[i], 1);
-
-
-                    if (items[i].sellIn < ELEVEN_DAYS) {
-                        if (items[i].quality < MAX_QUALITY) {
-                            changeQuality(items[i], 1);
-                        }
-                    }
-
-                    if (items[i].sellIn < SIX_DAYS) {
-                        if (items[i].quality < MAX_QUALITY) {
-                            changeQuality(items[i], 1);
-                        }
-                    }
-
-                    if (items[i].sellIn <= 0) {
-                        items[i].quality = 0;
-                    }
-                }
-                continue;
             }
             //Anything else
             else {
-                items[i].sellIn = items[i].sellIn - 1;
-                if (items[i].quality > 0) {
-                    if (items[i].sellIn < 0) {
-                        changeQuality(items[i], -2);
-                    } else {
-                        changeQuality(items[i], -1);
-                    }
-                }
+                updateRegularItem(i);
 
             }
         }
 
+    }
+
+    private void updateConjuredItem(Item item) {
+        if (item.quality <= MAX_QUALITY) {
+            if (item.sellIn < 0) {
+                changeQuality(item, -4);
+            } else {
+                changeQuality(item, -2);
+            }
+        } else {
+            item.quality = MAX_QUALITY;
+        }
+    }
+
+    private void updateRegularItem(int i) {
+        if (items[i].quality <= MAX_QUALITY) {
+            if (items[i].quality > 0) {
+                if (items[i].sellIn < 0) {
+                    changeQuality(items[i], -2);
+                } else {
+                    changeQuality(items[i], -1);
+                }
+            } else {
+                items[i].quality = 0;
+            }
+        } else {
+            items[i].quality = MAX_QUALITY;
+        }
+    }
+
+
+    private void updateBackstagePasses(Item item) {
+        if (item.quality <= MAX_QUALITY) {
+
+            changeQuality(item, 1);
+
+
+            if (item.sellIn < ELEVEN_DAYS) {
+                if (item.quality < MAX_QUALITY) {
+                    changeQuality(item, 1);
+                }
+            }
+
+            if (item.sellIn < SIX_DAYS) {
+                if (item.quality < MAX_QUALITY) {
+                    changeQuality(item, 1);
+                }
+            }
+
+            if (item.sellIn <= 0) {
+                item.quality = 0;
+            }
+        } else {
+            item.quality = MAX_QUALITY;
+        }
+    }
+
+    private void updateAgedBrie(int i) {
+
+
+        if (items[i].quality < MAX_QUALITY) {
+            if (items[i].sellIn < 0) {
+                changeQuality(items[i], 2);
+            } else {
+                changeQuality(items[i], 1);
+            }
+        } else {
+            items[i].quality = MAX_QUALITY;
+        }
     }
 
     private void changeQuality(Item item, int value) {

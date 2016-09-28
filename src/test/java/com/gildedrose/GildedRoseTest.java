@@ -25,6 +25,14 @@ public class GildedRoseTest {
         app.updateQuality();
 
         assertEquals(0, app.items[0].quality);
+
+        Item[] negativeItem = new Item[] { new Item("foo", 10, -5) };
+        GildedRose app2 = new GildedRose(negativeItem);
+        app2.updateQuality();
+
+        assertEquals(0, app2.items[0].quality);
+
+
     }
 
     @Test public void itemQualityDecreasesByTwoWhenSellInIsPassed() {
@@ -64,11 +72,12 @@ public class GildedRoseTest {
     }
     @Test public void qualityOfNonSulfurasItemsNeverExceeds50() {
         //                            Item{ name, sellIn, Quality}
-        Item[] items = new Item[] { new Item("Aged Brie", 10, 50) };
+        Item[] items = new Item[] { new Item("Aged Brie", 10, 500)  , new Item("Conjured Brie", 10, 100)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
 
         assertEquals(50, app.items[0].quality);
+        assertEquals(50, app.items[1].quality);
     }
     @Test public void backstagePassesOver10DaysIncreasesQualityBy1() {
         //                            Item{ name, sellIn, Quality}
@@ -114,7 +123,38 @@ public class GildedRoseTest {
         app.updateQuality();
 
         assertEquals(80, app.items[0].quality);
-        assertEquals(5, app.items[0].sellIn);
+        assertEquals(4, app.items[0].sellIn);
+    }
+
+    @Test public void ifSulfarasIsNotEighty() {
+        //                            Item{ name, sellIn, Quality}
+        Item[] items = new Item[] { new Item("Sulfuras, Hand of Ragnaros", 5, 40) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+
+        assertEquals(80, app.items[0].quality);
+
 
     }
+
+    @Test public void ifItemConjuredDegradeDouble() {
+
+        Item[] items = new Item[] { new Item("Conjured Paper", 5, 40) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+
+        assertEquals(38, app.items[0].quality);
+    }
+
+    @Test public void regularItemQuantityCannotExceedFifty() {
+
+        Item[] items = new Item[] { new Item("Paper", 5, 500) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+
+        assertEquals(50, app.items[0].quality);
+    }
+
+
+
 }
