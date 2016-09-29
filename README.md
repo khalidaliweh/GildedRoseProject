@@ -6,4 +6,5 @@ For the remote mob programming practice, we used Google Hangouts for the face-to
 The recordings for this session can be found at:
 
 https://youtu.be/vUwqq51Fif4
+
 https://youtu.be/WK0CBKIIMWA
