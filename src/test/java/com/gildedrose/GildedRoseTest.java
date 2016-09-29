@@ -15,7 +15,6 @@ public class GildedRoseTest {
         assertEquals("foo", app.items[0].name);
         assertEquals(9, app.items[0].sellIn);
         assertEquals(19, app.items[0].quality);
-
     }
 
     @Test public void itemQualityNeverNegative() {
@@ -31,8 +30,6 @@ public class GildedRoseTest {
         app2.updateQuality();
 
         assertEquals(0, app2.items[0].quality);
-
-
     }
 
     @Test public void itemQualityDecreasesByTwoWhenSellInIsPassed() {
@@ -116,6 +113,15 @@ public class GildedRoseTest {
         assertEquals(0, app.items[0].quality);
     }
 
+    @Test public void backstagePassesQualtiryNeverExceedsMaximum() {
+
+        Item[] items = new Item[] { new Item("Backstage passes to a TAFKAL80ETC concert", 10, 100) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+
+        assertEquals(50, app.items[0].quality);
+    }
+
     @Test public void sulfurasQuality() {
         //                            Item{ name, sellIn, Quality}
         Item[] items = new Item[] { new Item("Sulfuras, Hand of Ragnaros", 5, 80) };
@@ -133,8 +139,6 @@ public class GildedRoseTest {
         app.updateQuality();
 
         assertEquals(80, app.items[0].quality);
-
-
     }
 
     @Test public void ifItemConjuredDegradeDouble() {
@@ -146,6 +150,15 @@ public class GildedRoseTest {
         assertEquals(38, app.items[0].quality);
     }
 
+    @Test public void expiredConjuredItemDegradeDouble() {
+
+        Item[] items = new Item[] { new Item("Conjured Paper", 0, 40) };
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+
+        assertEquals(36, app.items[0].quality);
+    }
+
     @Test public void regularItemQuantityCannotExceedFifty() {
 
         Item[] items = new Item[] { new Item("Paper", 5, 500) };
@@ -154,7 +167,4 @@ public class GildedRoseTest {
 
         assertEquals(50, app.items[0].quality);
     }
-
-
-
 }

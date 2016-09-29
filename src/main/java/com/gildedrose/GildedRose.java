@@ -1,14 +1,14 @@
 package com.gildedrose;
 
 class GildedRose {
-    public static final String AGED_BRIE = "Aged Brie";
-    public static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
-    public static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
-    public static final int MAX_QUALITY = 50;
-    public static final int ELEVEN_DAYS = 11;
-    public static final int SIX_DAYS = 6;
-    public static final int SULFURAS_PERM_QUALITY = 80;
-    public static final String CONJURED = "Conjured";
+    private static final String AGED_BRIE = "Aged Brie";
+    private static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
+    private static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
+    private static final int MAX_QUALITY = 50;
+    private static final int ELEVEN_DAYS = 11;
+    private static final int SIX_DAYS = 6;
+    private static final int SULFURAS_PERM_QUALITY = 80;
+    private static final String CONJURED = "Conjured";
     Item[] items;
 
     public GildedRose(Item[] items) {
@@ -24,7 +24,6 @@ class GildedRose {
             if (items[i].name.equals(SULFURAS)) {
                 items[i].quality = SULFURAS_PERM_QUALITY;
             }
-
             //CONJURED
             else if (items[i].name.contains(CONJURED)) {
                 updateConjuredItem(items[i]);
@@ -32,21 +31,16 @@ class GildedRose {
             //AGED_BRIE
             else if (items[i].name.equals(AGED_BRIE)) {
                 updateAgedBrie(i);
-
             }
             // BACKSTAGE_PASSES
             else if (items[i].name.equals(BACKSTAGE_PASSES)) {
-
                 updateBackstagePasses(items[i]);
-
             }
             //Anything else
             else {
                 updateRegularItem(i);
-
             }
         }
-
     }
 
     private void updateConjuredItem(Item item) {
@@ -77,25 +71,19 @@ class GildedRose {
         }
     }
 
-
     private void updateBackstagePasses(Item item) {
         if (item.quality <= MAX_QUALITY) {
-
             changeQuality(item, 1);
-
-
             if (item.sellIn < ELEVEN_DAYS) {
                 if (item.quality < MAX_QUALITY) {
                     changeQuality(item, 1);
                 }
             }
-
             if (item.sellIn < SIX_DAYS) {
                 if (item.quality < MAX_QUALITY) {
                     changeQuality(item, 1);
                 }
             }
-
             if (item.sellIn <= 0) {
                 item.quality = 0;
             }
@@ -105,8 +93,6 @@ class GildedRose {
     }
 
     private void updateAgedBrie(int i) {
-
-
         if (items[i].quality < MAX_QUALITY) {
             if (items[i].sellIn < 0) {
                 changeQuality(items[i], 2);
@@ -117,9 +103,8 @@ class GildedRose {
             items[i].quality = MAX_QUALITY;
         }
     }
-
     private void changeQuality(Item item, int value) {
-        item.quality = item.quality + value;
+        item.quality += value;
     }
 
 }
