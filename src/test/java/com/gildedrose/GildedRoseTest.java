@@ -167,4 +167,11 @@ public class GildedRoseTest {
 
         assertEquals(50, app.items[0].quality);
     }
+    @Test public void printingTheItemDoesntReturnNull() {
+
+      Item item =new Item("Paper", 5, 500);
+
+
+        assertNotNull(item.toString());
+    }
 }
